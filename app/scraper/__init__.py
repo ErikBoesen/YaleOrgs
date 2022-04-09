@@ -84,7 +84,7 @@ def scrape(yaleconnect_cookie):
                             'membership_benefits': 'benefits',
                         }.get(prop, prop)
                         content = child.find_all(text=True, recursive=False)
-                        text = '\n'.join(content)
+                        text = '\n'.join([line.strip() for line in content])
                         organizations[i][prop] = (organizations[i][prop] + '\n' + text).strip()
                 elif current_header == 'CONSTITUTION':
                     if child.name == 'p':
