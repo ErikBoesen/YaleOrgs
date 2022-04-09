@@ -87,7 +87,7 @@ class Organization(db.Model):
         'type', 'category',
     )
     __serializable__ = (
-        'id', 'name', 'email', 'website', 'type', 'category', 'address', 'benefits', 'goals', 'constitution', 'officers',
+        'id', 'name', 'type', 'category', 'email', 'website', 'phone', 'address', 'benefits', 'goals', 'constitution', 'officers',
     )
     _to_expand = ('officers')
 
@@ -96,6 +96,7 @@ class Organization(db.Model):
     type = db.Column(db.String)
     category = db.Column(db.String)
     website = db.Column(db.String)
+    phone = db.Column(db.String)
     email = db.Column(db.String)
     address = db.Column(db.String)
 
