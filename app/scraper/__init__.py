@@ -2,7 +2,7 @@ from app import app, db, celery
 from app.models import Organization, Person
 
 import requests
-from bs4 import BeautifulSoup, NavigableString
+from bs4 import BeautifulSoup, Tag, NavigableString
 
 DEBUG = True
 ROOT = 'https://yaleconnect.yale.edu'
@@ -83,18 +83,18 @@ def scrape(yaleconnect_cookie):
                     if child.name == 'p':
                         organizations[i]['constitution'] = ROOT + child.find('a')['href']
                 elif current_header == 'CONTACT INFO':
-                    if child.name == 'span' and 'class' in child and 'mdi' in child['class']:
+                    if isinstance(child, Tag) and child.name == 'span' and child.get('class') is not None and 'mdi' in child['class']:
                         current_contact_property = child['class'][1].replace('mdi-', '')
                     else:
-                        if isinstance(child, tag):
+                        if isinstance(child, Tag):
                             text = child.text.strip()
                         else:
-                            text = child.get_text()
+                            text = str(child).strip()
                         if text and current_contact_property:
                             if current_contact_property == 'email':
                                 organizations[i]['email'] = text
-                            elif current_contact_property == 'marker':
-                                organizations[i]['address'] = text
+                            elif current_contact_property in ('marker', 'map-marker'):
+                                organizations[i]['address'] = '\n'.join([line.strip() for line in text.split('\n')])
                             elif current_contact_property == 'earth':
                                 organizations[i]['website'] = text
                             else:
