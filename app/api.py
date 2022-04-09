@@ -37,7 +37,7 @@ def check_token():
         else:
             token = request.headers.get('Authorization')
             if not token:
-                return fail('No token provided.')
+                return fail('No token provided.', code=401)
             token = token.split(' ')[-1]
             g.user = User.from_token(token)
             if g.user is None:

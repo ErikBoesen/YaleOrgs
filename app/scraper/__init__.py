@@ -121,6 +121,7 @@ def scrape(yaleconnect_cookie):
         organization = Organization(**organization_dict)
         db.session.add(organization)
         organization.officers[:] = []
+        # Remove empty values
         organization_dict = {prop: value for prop, value in organization_dict.items() if value}
         for officer in officers:
             person = Person.query.get(officer['id'])
