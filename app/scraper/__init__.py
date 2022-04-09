@@ -27,23 +27,29 @@ def scrape(yaleconnect_cookie):
     # Remove header
 
     rows.pop(0)
+    organization_ids = set()
     organizations = []
     for row in rows:
         header = row.find('h2', {'class': 'media-heading'})
         a = header.find('a')
         url = a['href']
+        organization_id = int(url.replace(ROOT + '/student_community?club_id=', ''))
         name = a.text.strip()
+        if organization_id in organization_ids:
+            print(f'Already parsed {name}.')
+            continue
         logo = row.find('img')['src']
         if 'Default_Group_Logo' in logo:
             logo = None
         else:
             logo = ROOT + logo
         organizations.append({
-            'id': int(url.replace(ROOT + '/student_community?club_id=', '')),
+            'id': organization_id,
             'name': name,
             'logo': logo,
             'mission': '',
         })
+        organization_ids.add(organization_id)
 
     print(organizations)
 
