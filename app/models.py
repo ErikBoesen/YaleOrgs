@@ -78,24 +78,27 @@ officerships = db.Table(
 class Organization(SearchableMixin, db.Model):
     __tablename__ = 'organization'
     __searchable__ = (
-        'name', 'email',
+        'name', 'email', 'address',
     )
     __filterable_identifiable__ = (
         'id', 'name', 'email',
     )
     __filterable__ = (
-        'address',
+        'address', 'type', 'category',
     )
     __serializable__ = (
-        'id', 'name', 'email', 'address', 'benefits', 'goals', 'constitution',
+        'id', 'name', 'email', 'type', 'category', 'address', 'benefits', 'goals', 'constitution',
     )
     __to_expand__ = ('officers')
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
+    type = db.Column(db.String)
+    category = db.Column(db.String)
     email = db.Column(db.String)
     address = db.Column(db.String)
 
+    mission = db.Column(db.String)
     benefits = db.Column(db.String)
     goals = db.Column(db.String)
     constitution = db.Column(db.String)
