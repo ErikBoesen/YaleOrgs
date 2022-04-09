@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup, NavigableString
 DEBUG = True
 ROOT = 'https://yaleconnect.yale.edu'
 
-def get_soup(url):
+def get_soup(url, yaleconnect_cookie):
     r = requests.get(
         url,
         headers={'Cookie': yaleconnect_cookie}
@@ -19,7 +19,10 @@ def scrape(yaleconnect_cookie):
     # Store people into database
 
     print('Reading organizations list.')
-    organizations_soup = get_soup(ROOT + ('/club_signup' if DEBUG else '/club_signup?view=all')).find('div', {'class': 'content-cont'})
+    organizations_soup = get_soup(
+        ROOT + ('/club_signup' if DEBUG else '/club_signup?view=all'),
+        yaleconnect_cookie,
+    ).find('div', {'class': 'content-cont'})
     rows = organizations_soup.find('ul', {'class': 'list-group'}).find_all('li', {'class': 'list-group-item'})
     # Remove header
 
@@ -39,7 +42,7 @@ def scrape(yaleconnect_cookie):
 
     for i in range(len(organizations)):
         organization_id = organizations[i]['id']
-        about_soup = get_soup(f'{ROOT}/ajax_group_page_about?ax=1&club_id={organization_id}').find('div', {'class': 'card-block'})
+        about_soup = get_soup(f'{ROOT}/ajax_group_page_about?ax=1&club_id={organization_id}', yaleconnect_cookie).find('div', {'class': 'card-block'})
         current_header = None
         current_contact_property = None
         for child in about_soup.children:
@@ -101,7 +104,7 @@ def scrape(yaleconnect_cookie):
                         officer['name'] = child['alt'].replace('Profile image for ', '')
                         ajax_path = child['onclick'].split('\'')[1]
                         officer['id'] = int(ajax_path.split('=')[-1])
-                        profile_soup = get_soup(ROOT + ajax_path)
+                        profile_soup = get_soup(ROOT + ajax_path, yaleconnect_cookie)
                         email_li = profile_soup.find('li', {'class': 'mdi-email'})
                         if email_li:
                             officer['email'] = email_li.find('a')['href'].replace('mailto:', '')

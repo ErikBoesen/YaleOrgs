@@ -64,14 +64,6 @@ def create_key():
     return to_json(key)
 
 
-"""
-@app.route('/keys/<key_id>', methods=['POST'])
-@login_required
-def update_key(key_id):
-    pass
-"""
-
-
 @app.route('/keys/<key_id>', methods=['DELETE'])
 @login_required
 def delete_key(key_id):

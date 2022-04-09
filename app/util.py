@@ -25,10 +25,6 @@ def fail(message, code=400):
 
 
 class ModelEncoder(json.JSONEncoder):
-    def val_to_string(self, val):
-        if type(val) == datetime.date:
-            return val.strftime(DATE_FMT)
-        return val
 
     def default(self, obj):
         if isinstance(obj.__class__, DeclarativeMeta):
@@ -44,7 +40,7 @@ class ModelEncoder(json.JSONEncoder):
                         # not expanding this field: set it to None and continue
                         fields[field] = None
                         continue
-                fields[field] = self.val_to_string(val)
+                fields[field] = val
             # a json-encodable dict
             return fields
 
