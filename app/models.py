@@ -87,7 +87,8 @@ class Organization(db.Model):
         'type', 'category',
     )
     __serializable__ = (
-        'id', 'name', 'type', 'category', 'email', 'website', 'phone', 'logo', 'address', 'benefits', 'goals', 'constitution', 'officers',
+        'id', 'name', 'type', 'category', 'email', 'website', 'phone', 'logo', 'address',
+        'mission', 'benefits', 'goals', 'constitution', 'officers',
     )
     _to_expand = ('officers')
 
