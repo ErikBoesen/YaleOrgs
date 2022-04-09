@@ -68,6 +68,13 @@ class User(db.Model):
             return None
 
 
+officerships = db.Table(
+    'officership',
+    db.Column('organization_id', db.Integer, db.ForeignKey('organization.id'), nullable=False),
+    db.Column('person_id', db.Integer, db.ForeignKey('person.id'), nullable=False),
+)
+
+
 class Organization(SearchableMixin, db.Model):
     __tablename__ = 'organization'
     __searchable__ = (
@@ -91,6 +98,10 @@ class Organization(SearchableMixin, db.Model):
     benefits = db.Column(db.String)
     goals = db.Column(db.String)
     constitution = db.Column(db.String)
+
+    officers = db.relationship(
+        'Person', secondary=officerships, lazy='subquery',
+        backref=db.backref('organization', lazy=True))
 
     @staticmethod
     def search(criteria):
@@ -124,7 +135,14 @@ class Organization(SearchableMixin, db.Model):
         else:
             people = person_query.all()
         return people
-        """
+
+
+class Person(db.Model):
+    __tablename__ = 'person'
+    __serializable__ = ('name', 'email')
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    email = db.Column(db.String)
 
 
 class Key(db.Model):

@@ -84,7 +84,7 @@ for i in range(len(groups)):
             elif current_header == 'MEMBERSHIP BENEFITS':
                 if child.name == 'p':
                     benefits = child.find_all(text=True, recursive=False)
-                    groups[i]['membership_benefits'] = '\n'.join(benefits)
+                    groups[i]['benefits'] = '\n'.join(benefits)
             elif current_header == 'GOALS':
                 if child.name == 'p':
                     if groups[i].get('goals'):
