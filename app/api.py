@@ -57,8 +57,8 @@ def api_filters():
 """
 
 
-@api_bp.route('/people', methods=['POST'])
+@api_bp.route('/organizations', methods=['POST'])
 def api_people():
     criteria = request.get_json() or {}
-    people = Person.search(criteria)
-    return to_json(people)
+    organizations = Organization.search(criteria)
+    return to_json(organizations)
