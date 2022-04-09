@@ -70,7 +70,7 @@ def scrape(yaleconnect_cookie):
                         organizations[i][prop] = value
                 elif current_header == 'MISSION':
                     if child.name == 'p':
-                        organizations[i]['mission'] = (organizations[i]['missions'] + '\n' + text).strip()
+                        organizations[i]['mission'] = (organizations[i]['mission'] + '\n' + text).strip()
                 elif current_header == 'MEMBERSHIP BENEFITS':
                     if child.name == 'p':
                         benefits = child.find_all(text=True, recursive=False)
