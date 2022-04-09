@@ -23,10 +23,7 @@ def store_user():
                               admin=is_first_user)
                 db.session.add(g.user)
             g.user.last_seen = timestamp
-            try:
-                print(g.person.first_name + ' ' + g.person.last_name)
-            except AttributeError:
-                print('Could not render name.')
+            print('User: ' + g.user.id)
             db.session.commit()
 
 
