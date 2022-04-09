@@ -86,7 +86,10 @@ def scrape(yaleconnect_cookie):
                     if child.name == 'span' and 'class' in child and 'mdi' in child['class']:
                         current_contact_property = child['class'][1].replace('mdi-', '')
                     else:
-                        text = child.text.strip()
+                        if isinstance(child, tag):
+                            text = child.text.strip()
+                        else:
+                            text = child.get_text()
                         if text and current_contact_property:
                             if current_contact_property == 'email':
                                 organizations[i]['email'] = text
