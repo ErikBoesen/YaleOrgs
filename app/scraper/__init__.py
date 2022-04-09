@@ -1,5 +1,5 @@
 from app import app, db, celery
-from app.models import Organization, Person
+from app.models import Organization, Person, officerships
 
 import requests
 from bs4 import BeautifulSoup, Tag, NavigableString
@@ -126,6 +126,7 @@ def scrape(yaleconnect_cookie):
                     print(f'Encountered unknown About header {current_header}.')
 
     print('Inserting new data.')
+    db.session.query(officerships).delete()
     Person.query.delete()
     Organization.query.delete()
     for organization_dict in organizations:
