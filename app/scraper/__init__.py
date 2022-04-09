@@ -21,7 +21,7 @@ def scrape(yaleconnect_cookie):
     """
 
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString
 
 yaleconnect_cookie = 'dtCookie=v_4_srv_6_sn_345D8D62EC5CF3008662D205540C82C2_perc_100000_ol_0_mul_1_app-3Aea7c4b59f27d43eb_1_app-3A1e70f254d6d57550_1; CG.SessionID=f44rgj4jlvc3psroe2d3yw4b-mwzfzfLk9IBpvv9mSae%2fJAizOr4%3d; cg_uid=1651934-bYlm4ZnwgHOMGvQdCu66jOzdvVGwKqHcx2oTVTJY8no='
 
@@ -30,12 +30,12 @@ DEBUG = True
 def get_soup(url):
     r = requests.get(
         url,
-        params={'view': 'all'} if not DEBUG else None,
         headers={'Cookie': yaleconnect_cookie}
     )
     return BeautifulSoup(r.text, 'html5lib')
 
-groups_soup = get_soup('https://yaleconnect.yale.edu/club_signup').find('div', {'class': 'content-cont'})
+print('Reading groups list.')
+groups_soup = get_soup('https://yaleconnect.yale.edu/club_signup' if DEBUG else 'https://yaleconnect.yale.edu/club_signup?view=all').find('div', {'class': 'content-cont'})
 rows = groups_soup.find('ul', {'class': 'list-group'}).find_all('li', {'class': 'list-group-item'})
 # Remove header
 rows.pop(0)
@@ -45,7 +45,6 @@ for row in rows:
     a = header.find('a')
     url = a['href']
     name = a.text.strip()
-    print('Read URL ' + url)
     groups.append({
         'id': int(url.replace('https://yaleconnect.yale.edu/student_community?club_id=', '')),
         'name': name,
@@ -57,6 +56,7 @@ for i in range(len(groups)):
     group_id = groups[i]['id']
     about_soup = get_soup(f'https://yaleconnect.yale.edu/ajax_group_page_about?ax=1&club_id={group_id}').find('div', {'class': 'card-block'})
     current_header = None
+    current_contact_property = None
     for child in about_soup.children:
         if child.name == 'h3':
             current_header = child.text
@@ -84,11 +84,32 @@ for i in range(len(groups)):
                     benefits = child.find_all(text=True, recursive=False)
                     groups[i]['membership_benefits'] = '\n'.join(benefits)
             elif current_header == 'GOALS':
-                pass
+                if child.name == 'p':
+                    if groups[i].get('goals'):
+                        groups[i]['goals'] += '\n'
+                    else:
+                        groups[i]['goals'] = ''
+                    groups[i]['mission'] += text
             elif current_header == 'CONSTITUTION':
-                pass
+                if child.name == 'p':
+                    groups[i]['constitution'] = 'https://yaleconnect.yale.edu' + child.find('a')['href']
             elif current_header == 'CONTACT INFO':
-                pass
+                print(child)
+                print(child.name)
+                if child.name == 'span' and 'class' in child and 'mdi' in child['class']:
+                    current_contact_property = child['class'][1].replace('mdi-', '')
+                else:
+                    if isinstance(child, NavigableString):
+                        continue
+                    text = child.text.strip()
+                    if text and current_contact_property:
+                        if current_contact_property == 'email':
+                            groups[i]['email'] = text
+                        elif current_conntact_property == 'marker':
+                            groups[i]['address'] = text
+                        else:
+                            print(f'Saw unrecognized contact property {current_contact_property} with value {text}.')
+
             elif current_header == 'OFFICERS':
                 pass
             elif current_header is None:
