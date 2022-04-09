@@ -59,12 +59,9 @@ def api_filters():
 
 @api_bp.route('/organizations', methods=['POST'])
 def api_people():
-    print('Fetching organizations.')
     try:
         criteria = request.get_json() or {}
     except:
         criteria = {}
-    print('Searching by criteria ' + str(criteria))
     organizations = Organization.search(criteria)
-    print(organizations)
     return to_json(organizations)

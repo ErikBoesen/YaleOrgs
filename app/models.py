@@ -84,7 +84,7 @@ class Organization(db.Model):
         'id', 'name', 'email',
     )
     __filterable__ = (
-        'address', 'type', 'category',
+        'type', 'category',
     )
     __serializable__ = (
         'id', 'name', 'email', 'type', 'category', 'address', 'benefits', 'goals', 'constitution',
