@@ -4,7 +4,7 @@ from app.models import Organization, Person, officerships
 import requests
 from bs4 import BeautifulSoup, Tag, NavigableString
 
-DEBUG = True
+DEBUG = False
 ROOT = 'https://yaleconnect.yale.edu'
 
 def get_soup(url, yaleconnect_cookie):
