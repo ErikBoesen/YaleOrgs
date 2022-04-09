@@ -8,7 +8,6 @@ import datetime
 import time
 
 
-
 @app.before_request
 def store_user():
     if request.method != 'OPTIONS':
@@ -46,7 +45,7 @@ def scrape():
     if request.method == 'GET':
         return render_template('scraper.html')
     payload = request.get_json()
-    scraper.scrape.apply_async(args=[payload['yaleconnect_token']])
+    scraper.scrape.apply_async(args=[payload['yaleconnect_cookie']])
     return '', 200
 
 
@@ -85,51 +84,3 @@ def delete_key(key_id):
     key.deleted = True
     db.session.commit()
     return succ('Key deleted.')
-
-
-@app.route('/auth', methods=['POST'])
-def auth():
-    # TODO: merge with above function?
-    payload = request.get_json()
-    jsessionid = payload.get('jsessionid')
-    if not jsessionid:
-        abort(401)
-    valid = validate(jsessionid)
-    if not valid:
-        abort(401)
-    # Validation sets the user for this session, so we can re-query
-    g.user = User.query.get(cas.username)
-    description = 'Mobile login'
-    key = Key.query.filter_by(id=g.user.id, description=description, internal=True)
-    if key is None:
-        key = g.user.create_key(description, internal=True)
-        db.session.add(key)
-        db.session.commit()
-    return jsonify({'token': key.token, 'expires_in': expires_in})
-
-
-"""
-def untuple(tuples):
-    return [t[0] for t in tuples]
-"""
-
-
-def get_years():
-    """
-    returns list of currently enrolled class years
-    After May, the oldest class should be removed
-    After July, the next class should be added
-    e.g.:
-    in January 2021: years = [2021, 2022, 2023, 2024]
-    in July 2021: years = [2022, 2023, 2024]
-    in September 2021: years = [2022, 2023, 2024, 2025]
-    """
-    GRAD_MONTH = 5  # May
-    ADD_MONTH = 8   # August
-    NUM_CLASSES = 4
-    current_date = datetime.date.today()
-    oldest_class_year = current_date.year if current_date.month <= GRAD_MONTH else current_date.year + 1
-    youngest_class_year = current_date.year + NUM_CLASSES if current_date.month >= ADD_MONTH else current_date.year + NUM_CLASSES - 1
-    years = list(range(oldest_class_year, youngest_class_year + 1))
-    years.append('')
-    return years
