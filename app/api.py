@@ -61,4 +61,5 @@ def api_filters():
 def api_people():
     criteria = request.get_json() or {}
     organizations = Organization.search(criteria)
+    print(organizations)
     return to_json(organizations)
