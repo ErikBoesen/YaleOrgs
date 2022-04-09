@@ -1,0 +1,124 @@
+@font-face {
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Lexend Deca Regular'), local('LexendDeca-Regular'), url(https://fonts.gstatic.com/s/lexenddeca/v1/K2F1fZFYk-dHSE0UPPuwQ5qnJy_YZ2ON.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Lexend Deca', serif;
+    font-size: 14px;
+    padding: 15px 20px;
+    color: #00356b;
+    background: white;
+    border-top: 20px solid #00356b;
+}
+header {
+    margin-bottom: 10px;
+}
+header img {
+    height: 46px;
+    vertical-align: top;
+    display: inline-block;
+}
+header #logo {
+    display: block;
+    text-decoration: none;
+    margin-top: 4px;
+}
+h2 {
+    font-size: 40px;
+    display: inline-block;
+    margin-top: -2px;
+    margin-left: 2px;
+}
+nav {
+    float: right;
+    position: relative;
+    top: 8px;
+    margin-bottom: 2px;
+}
+nav .button {
+    margin-bottom: 8px;
+}
+footer {
+    margin-top: 10px;
+    font-size: 10px;
+    color: lightgray;
+}
+h3 {
+    margin-top: 10px;
+}
+p {
+    margin: 5px 0 5px;
+    max-width: 6.5in;
+    line-height: 1.5;
+}
+a {
+    color: inherit;
+}
+
+label {
+    display: block;
+}
+input[type="text"],
+button, .button,
+textarea {
+    font: inherit;
+    border-radius: 20px;
+    outline: 0;
+}
+input[type="text"] {
+    padding: 8px 10px;
+    border: solid 1px lightgray;
+}
+button, .button {
+    padding: 9px 12px;
+    border: none;
+    background: #00356b;
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+button.outline, .button.outline {
+    padding: 8px 12px;
+    border: solid 1px lightgray;
+    background: none;
+    color: #00356b;
+}
+button.success, .button.success {
+    background: #38e128;
+}
+button.fail, .button.fail {
+    background: #f20000;
+}
+button[disabled] {
+    opacity: 0.6;
+    cursor: default;
+}
+textarea {
+    max-width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    overflow: visible;
+    border: solid 1px lightgray;
+    resize: none;
+    display: block;
+}
+
+@media (max-width: 700px) {
+    body {
+        font-size: 16px;
+    }
+    nav {
+        float: none;
+        position: static;
+    }
+}
