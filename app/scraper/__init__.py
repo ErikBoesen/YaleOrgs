@@ -42,6 +42,7 @@ def scrape(yaleconnect_cookie):
             'id': int(url.replace(ROOT + '/student_community?club_id=', '')),
             'name': name,
             'logo': logo,
+            'mission': '',
         })
 
     print(organizations)
@@ -69,11 +70,7 @@ def scrape(yaleconnect_cookie):
                         organizations[i][prop] = value
                 elif current_header == 'MISSION':
                     if child.name == 'p':
-                        if organizations[i].get('mission'):
-                            organizations[i]['mission'] += '\n'
-                        else:
-                            organizations[i]['mission'] = ''
-                        organizations[i]['mission'] += text
+                        organizations[i]['mission'] = (organizations[i]['missions'] + '\n' + text).strip()
                 elif current_header == 'MEMBERSHIP BENEFITS':
                     if child.name == 'p':
                         benefits = child.find_all(text=True, recursive=False)
