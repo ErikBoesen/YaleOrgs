@@ -75,7 +75,7 @@ officerships = db.Table(
 )
 
 
-class Organization(SearchableMixin, db.Model):
+class Organization(db.Model):
     __tablename__ = 'organization'
     __searchable__ = (
         'name', 'email', 'address',
