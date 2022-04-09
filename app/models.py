@@ -71,12 +71,16 @@ class User(db.Model):
 class Organization(SearchableMixin, db.Model):
     __tablename__ = 'organization'
     __searchable__ = (
+        'name', 'email',
     )
     __filterable_identifiable__ = (
+        'id', 'name', 'email',
     )
     __filterable__ = (
+        'address',
     )
     __serializable__ = (
+        'id', 'name', 'email', 'address', 'benefits', 'goals', 'constitution',
     )
 
     id = db.Column(db.Integer, primary_key=True)
@@ -88,7 +92,6 @@ class Organization(SearchableMixin, db.Model):
     goals = db.Column(db.String)
     constitution = db.Column(db.String)
 
-    """
     @staticmethod
     def search(criteria):
         print('Searching by criteria:')
@@ -98,15 +101,17 @@ class Organization(SearchableMixin, db.Model):
         filters = criteria.get('filters')
         page = criteria.get('page')
         page_size = criteria.get('page_size')
+        """
         if query:
             person_query = Person.query_search(query)
         else:
-            person_query = person_query.order_by(
-                #collate(Person.last_name, 'NOCASE'),
-                #collate(Person.first_name, 'NOCASE'),
-                Person.last_name,
-                Person.first_name,
-            )
+        """
+        person_query = person_query.order_by(
+            #collate(Person.last_name, 'NOCASE'),
+            #collate(Person.first_name, 'NOCASE'),
+            Person.last_name,
+            Person.first_name,
+        )
         if filters:
             for category in filters:
                 if category not in (Person.__filterable_identifiable__ + Person.__filterable__):
