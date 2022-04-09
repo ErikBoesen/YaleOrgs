@@ -118,6 +118,7 @@ def scrape(yaleconnect_cookie):
                     print(f'Encountered unknown About header {current_header}.')
 
     print('Inserting new data.')
+    Person.query.delete()
     Organization.query.delete()
     for organization_dict in organizations:
         officers = organization_dict.pop('officers')
