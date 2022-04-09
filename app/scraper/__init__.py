@@ -33,9 +33,15 @@ def scrape(yaleconnect_cookie):
         a = header.find('a')
         url = a['href']
         name = a.text.strip()
+        logo = row.find('img')['src']
+        if 'Default_Group_Logo' in logo:
+            logo = None
+        else:
+            logo = ROOT + logo
         organizations.append({
             'id': int(url.replace(ROOT + '/student_community?club_id=', '')),
             'name': name,
+            'logo': logo,
         })
 
     print(organizations)
