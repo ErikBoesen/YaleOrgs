@@ -48,6 +48,8 @@ def scrape(yaleconnect_cookie):
             'name': name,
             'logo': logo,
             'mission': '',
+            'goals': '',
+            'benefits': '',
             'officers': [],
         })
         organization_ids.add(organization_id)
@@ -75,20 +77,15 @@ def scrape(yaleconnect_cookie):
                             'group_type': 'type',
                         }.get(prop, prop)
                         organizations[i][prop] = value
-                elif current_header == 'MISSION':
+                elif current_header in ('MISSION', 'MEMBERSHIP BENEFITS', 'GOALS'):
                     if child.name == 'p':
-                        organizations[i]['mission'] = (organizations[i]['mission'] + '\n' + text).strip()
-                elif current_header == 'MEMBERSHIP BENEFITS':
-                    if child.name == 'p':
-                        benefits = child.find_all(text=True, recursive=False)
-                        organizations[i]['benefits'] = '\n'.join(benefits)
-                elif current_header == 'GOALS':
-                    if child.name == 'p':
-                        if organizations[i].get('goals'):
-                            organizations[i]['goals'] += '\n'
-                        else:
-                            organizations[i]['goals'] = ''
-                        organizations[i]['mission'] += text
+                        prop = current_header.lower().replace(' ', '_')
+                        prop = {
+                            'membership_benefits': 'benefits',
+                        }.get(prop, prop)
+                        content = child.find_all(text=True, recursive=False)
+                        text = '\n'.join(content)
+                        organizations[i][prop] = (organizations[i][prop] + '\n' + text).strip()
                 elif current_header == 'CONSTITUTION':
                     if child.name == 'p':
                         organizations[i]['constitution'] = ROOT + child.find('a')['href']
@@ -128,6 +125,7 @@ def scrape(yaleconnect_cookie):
                     print(f'Encountered unknown About header {current_header}.')
 
     print('Inserting new data.')
+    print(organizations)
     db.session.query(officerships).delete()
     Person.query.delete()
     Organization.query.delete()
