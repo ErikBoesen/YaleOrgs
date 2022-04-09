@@ -89,7 +89,7 @@ class Organization(db.Model):
     __serializable__ = (
         'id', 'name', 'email', 'website', 'type', 'category', 'address', 'benefits', 'goals', 'constitution', 'officers',
     )
-    __to_expand__ = ('officers')
+    _to_expand = ('officers')
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
