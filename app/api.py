@@ -59,6 +59,7 @@ def api_filters():
 
 @api_bp.route('/organizations', methods=['POST'])
 def api_people():
+    print('Fetching organizations.')
     criteria = request.get_json() or {}
     organizations = Organization.search(criteria)
     print(organizations)
