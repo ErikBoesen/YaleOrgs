@@ -103,6 +103,8 @@ def scrape(yaleconnect_cookie):
                                 organizations[i]['address'] = '\n'.join([line.strip() for line in text.split('\n')])
                             elif current_contact_property == 'earth':
                                 organizations[i]['website'] = text
+                            elif current_contact_property == 'cellphone':
+                                organizations[i]['phone'] = ''.join([char for char in text if text.isdigit()])
                             else:
                                 print(f'Saw unrecognized contact property {current_contact_property} with value {text}.')
                 elif current_header == 'OFFICERS':
