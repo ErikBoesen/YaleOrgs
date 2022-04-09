@@ -1,0 +1,18 @@
+#key {
+    margin: 15px 0 20px;
+}
+#readout_key {
+    display: none;
+}
+#keys_table {
+    display: none;
+}
+#keys_table button i {
+    /* Correct for trash icon being misshapen */
+    margin: 0 1px;
+}
+#keys_table th,
+#keys_table td {
+    padding-right: 10px;
+    padding-bottom: 5px;
+}
