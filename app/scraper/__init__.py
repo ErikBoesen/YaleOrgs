@@ -63,11 +63,26 @@ for i in range(len(groups)):
         else:
             if current_header == 'GENERAL':
                 if child.name == 'div':
-                    print(child.text)
+                    text = child.text.strip()
+                    if not text:
+                        continue
+                    prop, value = text.split(': ')
+                    prop = prop.lower().replace(' ', '_')
+                    prop = {
+                        'group_type': 'type',
+                    }.get(prop, prop)
+                    groups[i][prop] = value
             elif current_header == 'MISSION':
-                pass
+                if child.name == 'p':
+                    if groups[i].get('mission'):
+                        groups[i]['mission'] += '\n'
+                    else:
+                        groups[i]['mission'] = ''
+                    groups[i]['mission'] += text
             elif current_header == 'MEMBERSHIP BENEFITS':
-                pass
+                if child.name == 'p':
+                    benefits = child.find_all(text=True, recursive=False)
+                    groups[i]['membership_benefits'] = '\n'.join(benefits)
             elif current_header == 'GOALS':
                 pass
             elif current_header == 'CONSTITUTION':
