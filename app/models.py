@@ -78,7 +78,7 @@ officerships = db.Table(
 class Organization(db.Model):
     __tablename__ = 'organization'
     __searchable__ = (
-        'name', 'email', 'address',
+        'name', 'email', 'address', 'website',
     )
     __filterable_identifiable__ = (
         'id', 'name', 'email',
@@ -87,7 +87,7 @@ class Organization(db.Model):
         'type', 'category',
     )
     __serializable__ = (
-        'id', 'name', 'email', 'type', 'category', 'address', 'benefits', 'goals', 'constitution', 'officers',
+        'id', 'name', 'email', 'website', 'type', 'category', 'address', 'benefits', 'goals', 'constitution', 'officers',
     )
     __to_expand__ = ('officers')
 
@@ -95,6 +95,7 @@ class Organization(db.Model):
     name = db.Column(db.String, nullable=False)
     type = db.Column(db.String)
     category = db.Column(db.String)
+    website = db.Column(db.String)
     email = db.Column(db.String)
     address = db.Column(db.String)
 

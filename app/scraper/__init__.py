@@ -86,14 +86,14 @@ def scrape(yaleconnect_cookie):
                     if child.name == 'span' and 'class' in child and 'mdi' in child['class']:
                         current_contact_property = child['class'][1].replace('mdi-', '')
                     else:
-                        if isinstance(child, NavigableString):
-                            continue
                         text = child.text.strip()
                         if text and current_contact_property:
                             if current_contact_property == 'email':
                                 organizations[i]['email'] = text
-                            elif current_conntact_property == 'marker':
+                            elif current_contact_property == 'marker':
                                 organizations[i]['address'] = text
+                            elif current_contact_property == 'earth':
+                                organizations[i]['website'] = text
                             else:
                                 print(f'Saw unrecognized contact property {current_contact_property} with value {text}.')
                 elif current_header == 'OFFICERS':
