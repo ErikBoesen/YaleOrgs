@@ -133,7 +133,7 @@ class Organization(db.Model):
                     return None
                 if not isinstance(filters[category], list):
                     filters[category] = [filters[category]]
-                organization_query = organization_query.filter(getattr(Person, category).in_(filters[category]))
+                organization_query = organization_query.filter(getattr(Organization, category).in_(filters[category]))
         if page:
             organizations = organization_query.paginate(page, page_size or app.config['PAGE_SIZE'], False).items
         else:
