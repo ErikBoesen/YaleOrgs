@@ -111,16 +111,16 @@ class Organization(SearchableMixin, db.Model):
     def search(criteria):
         print('Searching by criteria:')
         print(criteria)
-        person_query = Person.query
+        organization_query = Organization.query
         query = criteria.get('query')
         filters = criteria.get('filters')
         page = criteria.get('page')
         page_size = criteria.get('page_size')
         """
         if query:
-            person_query = Person.query_search(query)
+            organization_query = Organization.query_search(query)
         else:
-            person_query = person_query.order_by(
+            organization_query = organization_query.order_by(
                 #collate(Person.last_name, 'NOCASE'),
                 #collate(Person.first_name, 'NOCASE'),
                 Person.last_name,
@@ -129,16 +129,16 @@ class Organization(SearchableMixin, db.Model):
         """
         if filters:
             for category in filters:
-                if category not in (Person.__filterable_identifiable__ + Person.__filterable__):
+                if category not in (Organization.__filterable_identifiable__ + Organization.__filterable__):
                     return None
                 if not isinstance(filters[category], list):
                     filters[category] = [filters[category]]
-                person_query = person_query.filter(getattr(Person, category).in_(filters[category]))
+                organization_query = organization_query.filter(getattr(Person, category).in_(filters[category]))
         if page:
-            people = person_query.paginate(page, page_size or app.config['PAGE_SIZE'], False).items
+            organizations = organization_query.paginate(page, page_size or app.config['PAGE_SIZE'], False).items
         else:
-            people = person_query.all()
-        return people
+            organizations = organization_query.all()
+        return organizations
 
 
 class Person(db.Model):
