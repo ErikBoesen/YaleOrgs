@@ -42,6 +42,7 @@ def scrape(yaleconnect_cookie):
 
     for i in range(len(organizations)):
         organization_id = organizations[i]['id']
+        print('Parsing ' + organizations[i]['name'])
         about_soup = get_soup(f'{ROOT}/ajax_group_page_about?ax=1&club_id={organization_id}', yaleconnect_cookie).find('div', {'class': 'card-block'})
         current_header = None
         current_contact_property = None
@@ -54,7 +55,6 @@ def scrape(yaleconnect_cookie):
                         text = child.text.strip()
                         if not text:
                             continue
-                        print(text)
                         prop, value = text.split(': ', 1)
                         prop = prop.lower().replace(' ', '_')
                         prop = {
