@@ -36,7 +36,7 @@ def scrape(yaleconnect_cookie):
         organization_id = int(url.replace(ROOT + '/student_community?club_id=', ''))
         name = a.text.strip()
         if organization_id in organization_ids:
-            print(f'Already parsed {name}.')
+            print(f'Already tracking {name}.')
             continue
         logo = row.find('img')['src']
         if 'Default_Group_Logo' in logo:
@@ -48,6 +48,7 @@ def scrape(yaleconnect_cookie):
             'name': name,
             'logo': logo,
             'mission': '',
+            'officers': [],
         })
         organization_ids.add(organization_id)
 
@@ -111,8 +112,6 @@ def scrape(yaleconnect_cookie):
                             else:
                                 print(f'Saw unrecognized contact property {current_contact_property} with value {text}.')
                 elif current_header == 'OFFICERS':
-                    if 'officers' not in organizations[i]:
-                        organizations[i]['officers'] = []
                     if child.name == 'img':
                         officer = {}
                         officer['name'] = child['alt'].replace('Profile image for ', '')
