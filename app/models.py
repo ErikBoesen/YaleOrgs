@@ -79,10 +79,14 @@ class Organization(SearchableMixin, db.Model):
     __serializable__ = (
     )
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-
-    # Identifiers
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
+    email = db.Column(db.String)
+    address = db.Column(db.String)
+
+    benefits = db.Column(db.String)
+    goals = db.Column(db.String)
+    constitution = db.Column(db.String)
 
     """
     @staticmethod
