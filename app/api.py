@@ -60,7 +60,7 @@ def api_filters():
 @api_bp.route('/organizations', methods=['POST'])
 def api_people():
     try:
-        criteria = request.get_json() or {}
+        criteria = request.get_json(force=True) or {}
     except:
         criteria = {}
     organizations = Organization.search(criteria)
