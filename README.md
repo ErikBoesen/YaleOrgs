@@ -2,6 +2,8 @@
 
 > A developer-friendly API that allows access to information about Yale College student clubs and organizations.
 
+![Screenshot](screenshot.png)
+
 ## Initial Setup
 To develop changes to the application, you'll need to run it locally for testing.
 
