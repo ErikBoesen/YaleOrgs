@@ -1,5 +1,7 @@
 # [👥 YaleOrgs](https://yaleorgs.com)
 
+### NOTICE: The YaleOrgs API has been deprecated and will no longer be updated. All endpoints, plus new features, have been merged into the [Yalies API](https://yalies.io/api). YaleOrgs will be shut down completely in November 2022.
+
 > A developer-friendly API that allows access to information about Yale College student clubs and organizations.
 
 ![Screenshot](screenshot.png)
