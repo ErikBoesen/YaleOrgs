@@ -39,8 +39,11 @@
             </a>
         </header>
         <main>
-            {% block content %}
-            {% endblock %}
+            <h3 class="warning">NOTICE: The YaleOrgs API has been deprecated and will no longer be updated. All endpoints, plus new features, have been merged into the <a href="https://yalies.io/api">Yalies API</a>. YaleOrgs will be shut down completely in November 2022.</h3>
+            <div class="greyed">
+                {% block content %}
+                {% endblock %}
+            </div>
         </main>
         <footer>
             <p>&copy; 2022 <a href="https://erikboesen.com">Erik Boesen</a>.</p>

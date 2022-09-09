@@ -122,3 +122,10 @@ textarea {
         position: static;
     }
 }
+
+.warning {
+    color: #C1292E;
+}
+.greyed {
+    opacity: 0.7;
+}
